@@ -188,7 +188,8 @@ class NoteApp extends Component {
             }
         })
     }
-    onHandleDeleteNote({id}){
+    onHandleDeleteNote(id){
+        console.log(this)
         this.setState((previous)=>{
             return {
                 notes: [
