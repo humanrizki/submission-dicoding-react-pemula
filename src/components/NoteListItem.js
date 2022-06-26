@@ -1,11 +1,17 @@
 import React from 'react'
 import {ThreeDotsVertical, X} from 'react-bootstrap-icons'
 function NoteListItem({title, added, edited, note, keyId, openPopUp, selectedId, closePopUp, handleOpenEditModal, handleDeleteNote, onHandleOpenReadModal}){
+        let changeTitle;
+        if(title.length >= 16){
+            changeTitle = title.substr(0,13)+'...'
+        } else {
+            changeTitle = title
+        }
         return (
             <div className='note-app__list-item h-50  bg-white border-2 border-dashed border-black rounded-lg p-2 shadow'>
                 <div className='note-app__list-item-header w-full flex justify-between items-center p-1'>
                     <div className='note-app__list-item-header_item flex items-center gap-2'>
-                        <h1 className='text-2xl'>{title}</h1><div className='w-3 h-3 rounded-full bg-gray-300'></div><p className='text-sm text-gray-400'>{added}</p>
+                        <h1 className='text-2xl w-40'>{changeTitle}</h1><div className='w-3 h-3 rounded-full bg-gray-300'></div><p className='text-sm text-gray-400'>{added}</p>
                     </div>
                     <div className='note-app__list-item-header_item relative'>
                         <button className='p-1 rounded text-base w-7 h-7 rounded-full hover:bg-gray-200' onClick={()=>{
