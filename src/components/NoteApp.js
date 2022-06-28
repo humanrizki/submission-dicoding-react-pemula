@@ -6,32 +6,11 @@ import ModalReadNote from './ModalReadNote'
 import v4Options from '../config/v4Options'
 import NoteInputBar from './NoteInputBar'
 import NoteList from './NoteList'
+import getData from './../utils/data'
 class NoteApp extends Component {
     constructor(props){
         super(props)
-        this.state = {
-            notes: [
-                {
-                    id: +new Date()+1,
-                    title: 'Title note s',
-                    note: 'Ini adalah note ku',
-                    added: new Date(+new Date()+1).toLocaleDateString(),
-                    edited: null
-                },
-                {
-                    id: +new Date()+2,
-                    title: 'Title note 2',
-                    note: 'Ini adalah note ku',
-                    added: new Date(+new Date()+2).toLocaleDateString(),
-                    edited: null
-                },
-            ], 
-            isBeingEdit: false,
-            isBeingAdd: false,
-            isBeingRead: false,
-            editId: null,
-            readId: null
-        }
+        this.state = getData()
     }
     onAddNewNoteHanler({title, note}){
         this.setState((previousState)=>{
