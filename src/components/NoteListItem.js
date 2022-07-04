@@ -1,38 +1,38 @@
 import React from 'react'
 import {ThreeDotsVertical, X} from 'react-bootstrap-icons'
-function NoteListItem({title, added, edited, note, keyId, openPopUp, selectedId, closePopUp, handleOpenEditModal, handleDeleteNote, onHandleOpenReadModal}){
+function NoteListItem({title, createdAt, updatedAt, note, keyId, openPopUp, selectedId, closePopUp, handleOpenEditModal, handleDeleteNote, onHandleOpenReadModal, showFormattedDate, handleArchivedNote}){
         let changeTitle;
-        if(title.length >= 16){
-            changeTitle = title.substr(0,13)+'...'
+        if(String(title).length >= 15){
+            changeTitle = String(title).substring(0,13)+'...'
         } else {
-            changeTitle = title
+            changeTitle = String(title)
         }
         return (
-            <div className='note-app__list-item h-50  bg-white border-2 border-dashed border-black rounded-lg p-2 shadow'>
+            <div className='note-app__list-item h-50 grid-cols-1 bg-white border-2 border-dashed border-black rounded-lg p-2 shadow' id={'note-'+keyId}>
                 <div className='note-app__list-item-header w-full flex justify-between items-center p-1'>
                     <div className='note-app__list-item-header_item flex items-center gap-2'>
-                        <h1 className='text-2xl w-40'>{changeTitle}</h1><div className='w-3 h-3 rounded-full bg-gray-300'></div><p className='text-sm text-gray-400'>{added}</p>
+                        <h1 className='text-2xl w-40'>{changeTitle}</h1><div className='w-3 h-3 rounded-full bg-gray-300'></div><p className='text-sm text-gray-400'>{showFormattedDate(createdAt)}</p>
                     </div>
                     <div className='note-app__list-item-header_item relative'>
                         <button className='p-1 rounded text-base w-7 h-7 rounded-full hover:bg-gray-200' onClick={()=>{
                             openPopUp(keyId)
                         }}><ThreeDotsVertical className="w-full h-full"/></button>
-                        <CheckOpenPopUp keyId={keyId} state={selectedId} onClosePopUp={closePopUp} onHandleOpenEditModal={handleOpenEditModal} onHandleDeleteNote={handleDeleteNote}/>
+                        <CheckOpenPopUp keyId={keyId} state={selectedId} onClosePopUp={closePopUp} onHandleOpenEditModal={handleOpenEditModal} onHandleDeleteNote={handleDeleteNote} onHandleArchivedNote={handleArchivedNote}/>
                     </div>
                 </div>
                 <hr/>
                 <div className='note-app__list-item-body overflow-y-auto h-24 mt-2'>
                     <p className='text-base'>{note}</p>
                 </div>
-                <CheckEdited edited={edited} onHandleOpenReadModal={onHandleOpenReadModal} keyId={keyId}/>
+                <CheckEdited updatedAt={updatedAt} onHandleOpenReadModal={onHandleOpenReadModal} keyId={keyId} showFormattedDate={showFormattedDate}/>
             </div>
         )
 } 
-function CheckEdited({edited, onHandleOpenReadModal, keyId}){
-    if(edited){
+function CheckEdited({updatedAt, onHandleOpenReadModal, keyId, showFormattedDate}){
+    if(updatedAt){
         return (
             <div className='note_app__list-item-footer mt-2 flex justify-between h-max items-center'>
-                <p className='w-2/5 h-full text-gray-300 text-sm'>edited : {edited}</p>
+                <p className='w-2/5 h-full text-gray-300 text-sm'>edited : {showFormattedDate(updatedAt)}</p>
                 <button className='w-1/5 h-full p-2 rounded bg-gray-200 border-2 border-black border-dashed' onClick={()=>{
                         onHandleOpenReadModal(keyId)
                     }} type="button">Read</button>
@@ -48,7 +48,7 @@ function CheckEdited({edited, onHandleOpenReadModal, keyId}){
         )
     }
 }
-function CheckOpenPopUp({keyId, state, onClosePopUp, onHandleOpenEditModal, onHandleDeleteNote}){
+function CheckOpenPopUp({keyId, state, onClosePopUp, onHandleOpenEditModal, onHandleDeleteNote, onHandleArchivedNote}){
     if(state === keyId){
         return (
             <div className='absolute top-10 right-0 w-28 h-max z-100 rounded bg-white border-2 border-black border-dashed pt-4'>
@@ -57,6 +57,10 @@ function CheckOpenPopUp({keyId, state, onClosePopUp, onHandleOpenEditModal, onHa
                     onHandleOpenEditModal(state)
                     onClosePopUp()
                 }}>Edit</button>
+                <button className='w-full text-left hover:bg-gray-300 p-2 hover:text-white' onClick={()=>{
+                    onHandleArchivedNote(state)
+                    onClosePopUp()
+                }}>Archive</button>
                 <button className='w-full text-left p-2 hover:bg-red-400 hover:text-white' onClick={()=>{
                     onHandleDeleteNote(state)
                     onClosePopUp()

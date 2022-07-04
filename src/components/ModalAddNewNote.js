@@ -5,10 +5,28 @@ class ModalAddNewNote extends Component{
         super(props)
         this.state = {
             title: '',
-            note: ''
+            note: '',
+            isLimitCharTitle: false
         }
     }
     handleTitleChange(event){
+        if(event.target.value.length >= 50){
+            this.setState((previous)=>{
+                return {
+                    title: previous.title,
+                    note: previous.note,
+                    isLimitCharTitle: true
+                }
+            })
+        } else {
+            this.setState((previous)=>{
+                return {
+                    title: previous.title,
+                    note: previous.note,
+                    isLimitCharTitle: false
+                }
+            })
+        }
         this.setState((previous)=>{
             return {
                 title: event.target.value,
@@ -42,13 +60,15 @@ class ModalAddNewNote extends Component{
                         <form className='note-app__modal-new-note__form-input  h-96 overflow-y-auto md:w-4/5  w-full flex flex-col items-center p-2' onSubmit={this.handleSubmitNewNote.bind(this)}>
                             <div className='note-app__modal-new-note__group-form-input w-full box-border'>
                                 <label htmlFor='title' className='w-full text-base'>Title</label>
-                                <input placeholder='' type='text' id='title' className='text-sm w-full border-2 p-2 border-dashed  focus:border-2 focus:border-dashed focust:outline-0 focus:outline-none focus:ring-0 rounded' value={this.state.title} onChange={this.handleTitleChange.bind(this)} required/>
+                                <input placeholder='' type='text' id='title' className={this.state.isLimitCharTitle ? 'text-sm w-full border-2 p-2 border-dashed  focus:border-2 focus:border-dashed focust:outline-0 focus:outline-none focus:ring-0 rounded border-red-500' : 'text-sm w-full border-2 p-2 border-dashed  focus:border-2 focus:border-dashed focust:outline-0 focus:outline-none focus:ring-0 rounded '} value={this.state.title} onChange={this.handleTitleChange.bind(this)} required />
+                                {/* <p className='font-medium text-red-500 text-sm'>*title terlalu panjang </p> */}
+                                {this.state.isLimitCharTitle ? <p className='font-medium text-red-500 text-sm'>*title terlalu panjang </p> : <></>}
                             </div>
                             <div className='note-app__modal-new-note__group-form-input w-full h-96 overflow-y-auto'>
                                 <label htmlFor='note'  className='w-full text-base'>Note</label>
                                 <textarea id='note' className='text-sm w-full h-52 mb-5 border-2 p-2 border-dashed  focus:border-2 focus:border-dashed focust:outline-0 focus:outline-none focus:ring-0 rounded' value={this.state.note} onChange={this.handleNoteChange.bind(this)} required></textarea>
                             </div>
-                            <button className='w-4/5 rounded mt-2 p-2 bg-green-400 text-base text-white' type="submit">Submit</button>
+                            <button className={this.state.isLimitCharTitle ? 'w-4/5 rounded mt-2 p-2 bg-gray-300 text-base text-white' : 'w-4/5 rounded mt-2 p-2 bg-green-400 text-base text-white'} type="submit" disabled={this.state.isLimitCharTitle}>Submit</button>
                         </form>
                     </div>
                     
