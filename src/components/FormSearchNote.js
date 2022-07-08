@@ -34,8 +34,8 @@ class FormSearchNote extends Component {
                 <hr className='w-full my-3'/>
                 {this.state.resultSeach.length !== 0 ? <div className='result-search w-full h-32 overflow-y-auto'>
                     {this.state.resultSeach.map((result, index)=>(
-                        <div className='w-full p-2 flex border-2 border-dashed rounded mb-2 h-14 items-center' key={result.id}>
-                            <div className='number-result w-[30px] h-[30px] inline-flex justify-center items-center rounded-full bg-gray-400 mr-5 text-white'><p>{index+1}</p></div>
+                        <div className='w-full p-2 flex border-2 border-dashed rounded mb-2 h-max items-center' key={result.id}>
+                            <div className={(index+1) % 2 === 0 ? 'number-result w-[30px] h-[30px] inline-flex justify-center items-center rounded-full bg-blue-400 mr-5 text-white' : 'number-result w-[30px] h-[30px] inline-flex justify-center items-center rounded-full bg-gray-400 mr-5 text-white'}><p>{index+1}</p></div>
                             <div className='body w-11/12'>
                                 <p className='text-base'><a href={'#note-'+result.id} className='text-blue-400'>{result.title}</a></p>
                                 {result.archived ? <p className='text-sm text-yellow-300'>arsip</p> : <p className='text-sm text-green-400'>aktif</p>}
